@@ -6,6 +6,7 @@
 - **email:** gecineven@gmail.com
 - **linkedin:** https://www.linkedin.com/in/neven-geci/
 - **github:** https://github.com/Nesho99
+- **website:** https://nesho99.github.io
 
 Cloud security and platform engineer with 4 years across data platforms, cloud infrastructure and security, from ETL pipelines and a product-wide public API to GxP-validated infrastructure and centralized identity. Came up through QA and security testing, so “what happens when this breaks?” is baked into how I build.
 

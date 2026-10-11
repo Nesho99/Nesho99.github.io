@@ -1,5 +1,4 @@
-/* Light is the banner look. Dark follows the system unless the visitor picks a theme
-   (`kubectl config use-context dark|light`), which sets data-theme on <html>. */
+/* Light only, the banner look. "only light" also stops phone browsers auto-darkening the page. */
 :root {
   --bg: #FFFFFF;
   --card: #FFFFFF;
@@ -28,69 +27,8 @@
   --react-bg: #EAF5FA;
   --link-blue: #1264A3;
   --mono: "JetBrains Mono", Consolas, ui-monospace, monospace;
-  color-scheme: light dark;
+  color-scheme: only light;
 }
-
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) {
-    --bg: #0E1113;
-    --card: #13181B;
-    --accent: #45B8AA;
-    --accent-soft: #12302C;
-    --on-accent: #0E1113;
-    --text: #E4E6E7;
-    --muted: #98A2A8;
-    --rule: #252B2F;
-    --border: #353C41;
-    --bar: #191F22;
-    --dot: #1F2528;
-    --dot-mute: #4A5157;
-    --warn: #E0A440;
-    --err: #F07067;
-    --down-bg: #241315;
-    --link-ul: rgba(69, 184, 170, .4);
-    --shadow: rgba(0, 0, 0, .45);
-    --slack-meta: #9AA0A6;
-    --slack-chip: #2A3035;
-    --code-fg: #F28CA8;
-    --code-bg: #1E2428;
-    --code-border: #353C41;
-    --react-border: #2F5B73;
-    --react-bg: #13283A;
-    --link-blue: #7CC4F0;
-    color-scheme: dark;
-  }
-}
-:root[data-theme="dark"] {
-  --bg: #0E1113;
-  --card: #13181B;
-  --accent: #45B8AA;
-  --accent-soft: #12302C;
-  --on-accent: #0E1113;
-  --text: #E4E6E7;
-  --muted: #98A2A8;
-  --rule: #252B2F;
-  --border: #353C41;
-  --bar: #191F22;
-  --dot: #1F2528;
-  --dot-mute: #4A5157;
-  --warn: #E0A440;
-  --err: #F07067;
-  --down-bg: #241315;
-  --link-ul: rgba(69, 184, 170, .4);
-  --shadow: rgba(0, 0, 0, .45);
-  --slack-meta: #9AA0A6;
-  --slack-chip: #2A3035;
-  --code-fg: #F28CA8;
-  --code-bg: #1E2428;
-  --code-border: #353C41;
-  --react-border: #2F5B73;
-  --react-bg: #13283A;
-  --link-blue: #7CC4F0;
-  color-scheme: dark;
-}
-/* "only light": a visitor who picked light mode must not get auto-darkened by the phone's browser */
-:root[data-theme="light"] { color-scheme: only light; }
 
 * { box-sizing: border-box; }
 
@@ -135,13 +73,6 @@ a:focus-visible, button:focus-visible, .toggle input:focus-visible {
 .home { color: var(--accent); font-weight: 700; margin-right: auto; }
 .dl { order: 2; color: var(--accent); font-weight: 700; text-decoration: none; border: 1.5px solid var(--accent); border-radius: 6px; padding: 2px 10px; }
 .dl:hover { background: var(--accent-soft); }
-.theme-btn {
-  order: 2; display: inline-grid; place-items: center;
-  width: 30px; height: 28px; padding: 0;
-  font: 15px/1 var(--mono); color: var(--accent);
-  background: transparent; border: 1.5px solid var(--border); border-radius: 6px; cursor: pointer;
-}
-.theme-btn:hover { border-color: var(--accent); background: var(--accent-soft); }
 .meta { display: flex; gap: 28px; }
 .meta b { color: var(--accent); font-weight: 700; }
 

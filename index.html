@@ -3,16 +3,14 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <!-- both themes are designed, so browsers shouldn't auto-darken the page -->
-  <meta name="color-scheme" content="light dark">
-  <script>try { var t = localStorage.getItem("theme"); if (t === "dark" || t === "light") document.documentElement.dataset.theme = t; } catch (e) {}</script>
+  <!-- light only: stops phone browsers auto-darkening the page -->
+  <meta name="color-scheme" content="only light">
   <title>Neven Geci · Cloud Security</title>
   <meta name="description" content="Neven Geci — cloud security / platform engineer. Zero trust, IAM, Kubernetes, AWS, GitOps. An interactive terminal portfolio.">
   <meta property="og:title" content="Neven Geci · Cloud Security / Platform Engineer">
   <meta property="og:description" content="An interactive terminal portfolio: kubectl get engineer neven-geci">
   <meta property="og:type" content="website">
-  <meta name="theme-color" content="#FFFFFF" media="(prefers-color-scheme: light)">
-  <meta name="theme-color" content="#0E1113" media="(prefers-color-scheme: dark)">
+  <meta name="theme-color" content="#FFFFFF">
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%230B6E6E'/%3E%3Ctext x='5' y='22' font-family='monospace' font-size='16' font-weight='700' fill='%23fff'%3E$%3C/text%3E%3Crect x='18' y='9' width='7' height='14' fill='%23fff'/%3E%3C/svg%3E">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -25,7 +23,6 @@
 
   <header class="topbar">
     <span class="home">~/neven-geci</span>
-    <button type="button" class="theme-btn" id="theme-btn" aria-label="Switch to dark mode"><span aria-hidden="true">☾</span></button>
     <a class="dl" href="Neven_Geci_CV.pdf" download>Download CV ↓</a>
     <span class="meta" aria-hidden="true">
       <span>eu-central-1</span>

@@ -194,7 +194,6 @@
     ["terraform apply", "…and make it so"],
     ["chaos", "kill this terminal, watch it self-heal"],
     ["ctf", "a flag is hidden on this site"],
-    ["kubectl config use-context", "dark / light theme", "theme"],
     ["clear", "clear the screen"],
     ["help", "this list"],
   ];
@@ -504,18 +503,6 @@
     if (lc === "terraform init") { line(pass("Terraform has been successfully initialized!")); line(muted("next: "), cmdLink("terraform plan")); return; }
     if (/^terraform( |$)/.test(lc)) { line(muted("usage: "), cmdLink("terraform plan"), muted(" · "), cmdLink("terraform apply")); return; }
     if (/^(chaos|chaos-monkey|chaos monkey|kubectl delete pods?( .*)?)$/.test(lc)) return handlers.chaos();
-    m = lc.match(/^(?:kubectl config use-context|theme)(?: (dark|light|auto))?$/);
-    if (m) {
-      if (!m[1]) {
-        line(muted("current context: "), accent(document.documentElement.dataset.theme || "auto"));
-        line(muted("switch: "), cmdLink("kubectl config use-context dark", "dark"), muted(" · "),
-          cmdLink("kubectl config use-context light", "light"), muted(" · "), cmdLink("kubectl config use-context auto", "auto"));
-        return;
-      }
-      setTheme(m[1]);
-      line(`Switched to context "${m[1]}".`);
-      return;
-    }
     if (lc === "ctf" || lc === "flag") return handlers.ctf();
     m = cmd.match(/^submit(?: (.+))?$/i);
     if (m) return handlers.submit(m[1]);
@@ -615,7 +602,7 @@
   function completions() {
     const base = HELP.map(([c]) => c).filter((c) => !c.includes("<"));
     const roleCmds = roles().map((r) => "kubectl describe role " + r.id);
-    return [...base, ...roleCmds, "kubectl config use-context dark", "kubectl config use-context light", "submit flag{", "terraform destroy", "ls", "pwd", "history", "date", "exit"];
+    return [...base, ...roleCmds, "submit flag{", "terraform destroy", "ls", "pwd", "history", "date", "exit"];
   }
 
   function complete() {
@@ -688,25 +675,6 @@
     li.append(b);
     list.append(li);
   });
-
-  // ---------- theme: auto (system), dark or light; the top-bar button and `theme` both use this ----------
-  const themeBtn = $("theme-btn");
-  const prefersDark = matchMedia("(prefers-color-scheme: dark)");
-  const isDark = () => (document.documentElement.dataset.theme || (prefersDark.matches ? "dark" : "light")) === "dark";
-  function syncThemeBtn() {
-    const dark = isDark();
-    themeBtn.firstElementChild.textContent = dark ? "☀" : "☾";
-    themeBtn.setAttribute("aria-label", dark ? "Switch to light mode" : "Switch to dark mode");
-  }
-  function setTheme(mode) {
-    const root = document.documentElement;
-    if (mode === "auto") delete root.dataset.theme; else root.dataset.theme = mode;
-    try { mode === "auto" ? localStorage.removeItem("theme") : localStorage.setItem("theme", mode); } catch (_) {}
-    syncThemeBtn();
-  }
-  themeBtn.addEventListener("click", () => setTheme(isDark() ? "light" : "dark"));
-  prefersDark.addEventListener("change", syncThemeBtn);
-  syncThemeBtn();
 
   // ---------- devtools greeting (ctf fragment 2/3) ----------
   console.log(

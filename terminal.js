@@ -506,15 +506,13 @@
     if (/^(chaos|chaos-monkey|chaos monkey|kubectl delete pods?( .*)?)$/.test(lc)) return handlers.chaos();
     m = lc.match(/^(?:kubectl config use-context|theme)(?: (dark|light|auto))?$/);
     if (m) {
-      const root = document.documentElement;
       if (!m[1]) {
-        line(muted("current context: "), accent(root.dataset.theme || "auto"));
+        line(muted("current context: "), accent(document.documentElement.dataset.theme || "auto"));
         line(muted("switch: "), cmdLink("kubectl config use-context dark", "dark"), muted(" · "),
           cmdLink("kubectl config use-context light", "light"), muted(" · "), cmdLink("kubectl config use-context auto", "auto"));
         return;
       }
-      if (m[1] === "auto") delete root.dataset.theme; else root.dataset.theme = m[1];
-      try { m[1] === "auto" ? localStorage.removeItem("theme") : localStorage.setItem("theme", m[1]); } catch (_) {}
+      setTheme(m[1]);
       line(`Switched to context "${m[1]}".`);
       return;
     }
@@ -690,6 +688,25 @@
     li.append(b);
     list.append(li);
   });
+
+  // ---------- theme: auto (system), dark or light; the top-bar button and `theme` both use this ----------
+  const themeBtn = $("theme-btn");
+  const prefersDark = matchMedia("(prefers-color-scheme: dark)");
+  const isDark = () => (document.documentElement.dataset.theme || (prefersDark.matches ? "dark" : "light")) === "dark";
+  function syncThemeBtn() {
+    const dark = isDark();
+    themeBtn.firstElementChild.textContent = dark ? "☀" : "☾";
+    themeBtn.setAttribute("aria-label", dark ? "Switch to light mode" : "Switch to dark mode");
+  }
+  function setTheme(mode) {
+    const root = document.documentElement;
+    if (mode === "auto") delete root.dataset.theme; else root.dataset.theme = mode;
+    try { mode === "auto" ? localStorage.removeItem("theme") : localStorage.setItem("theme", mode); } catch (_) {}
+    syncThemeBtn();
+  }
+  themeBtn.addEventListener("click", () => setTheme(isDark() ? "light" : "dark"));
+  prefersDark.addEventListener("change", syncThemeBtn);
+  syncThemeBtn();
 
   // ---------- devtools greeting (ctf fragment 2/3) ----------
   console.log(

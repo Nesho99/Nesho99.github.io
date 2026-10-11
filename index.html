@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Neven Geci · Cloud Security</title>
+  <meta name="description" content="Neven Geci — cloud security / platform engineer. Zero trust, IAM, Kubernetes, AWS, GitOps. An interactive terminal portfolio.">
+  <meta property="og:title" content="Neven Geci · Cloud Security / Platform Engineer">
+  <meta property="og:description" content="An interactive terminal portfolio: kubectl get engineer neven-geci">
+  <meta property="og:type" content="website">
+  <meta name="theme-color" content="#FFFFFF">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%230B6E6E'/%3E%3Ctext x='5' y='22' font-family='monospace' font-size='16' font-weight='700' fill='%23fff'%3E$%3C/text%3E%3Crect x='18' y='9' width='7' height='14' fill='%23fff'/%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- ctf fragment 1/3: flag{z3r0_ -->
+  <a class="skip" href="#commands">Skip to command list</a>
+
+  <header class="topbar">
+    <span class="home">~/neven-geci</span>
+    <a class="dl" href="Neven_Geci_CV.pdf" download>Download CV ↓</a>
+    <span class="meta" aria-hidden="true">
+      <span>eu-central-1</span>
+      <span>tls: <b>ok</b></span>
+      <span>mfa: <b>on</b></span>
+      <span>Varaždin, HR</span>
+    </span>
+  </header>
+
+  <main class="stage">
+    <!-- background windows: decorative, faded, animated by alerts.js -->
+    <div class="ghost g-pods" aria-hidden="true">
+      <div class="bar"><i></i><i></i><i></i><span>watch kubectl get pods</span></div>
+      <div class="ghost-body" id="ghost-pods"></div>
+    </div>
+    <div class="ghost g-cron" aria-hidden="true">
+      <div class="bar"><i></i><i></i><i></i><span>crontab -l</span></div>
+      <div class="ghost-body" id="ghost-cron"></div>
+    </div>
+    <div class="ghost g-trivy" aria-hidden="true">
+      <div class="bar"><i></i><i></i><i></i><span>trivy image --watch</span></div>
+      <div class="ghost-body" id="ghost-trivy"></div>
+    </div>
+    <div class="ghost g-logs" aria-hidden="true">
+      <div class="bar"><i></i><i></i><i></i><span>kubectl logs -f</span></div>
+      <div class="ghost-log" id="ghost-log">
+        <div class="ll"><span class="lvl">INFO</span> rotate secrets: ok</div>
+        <div class="ll"><span class="lvl">INFO</span> zscaler connectors upgraded</div>
+        <div class="ll"><span class="lvl">INFO</span> argocd sync: Synced/Healthy</div>
+        <div class="ll"><span class="lvl">INFO</span> keda scaled consumer 2→6</div>
+        <div class="ll"><span class="lvl warn">WARN</span> cert expires in 29d</div>
+        <div class="ll"><span class="lvl">INFO</span> sso: login ok (okta)</div>
+      </div>
+    </div>
+
+    <section class="term" aria-label="Interactive terminal">
+      <div class="bar">
+        <i></i><i></i><i></i>
+        <span class="title">neven@cloudsec: ~ — zsh</span>
+      </div>
+      <div class="screen" id="screen">
+        <h1 class="sr-only">Neven Geci — Cloud Security / Platform Engineer</h1>
+        <div id="out" role="log" aria-live="polite" aria-relevant="additions"></div>
+        <form id="prompt" class="prompt" autocomplete="off">
+          <label for="cmd" class="ps1">$</label>
+          <div class="field">
+            <input id="cmd" type="text" spellcheck="false" autocapitalize="off" autocorrect="off" enterkeyhint="send"
+                   aria-label="Type a command, for example help" aria-describedby="hint">
+            <div class="mirror" aria-hidden="true"><span id="m-before"></span><span id="m-cursor" class="cursor"> </span><span id="m-after"></span></div>
+          </div>
+        </form>
+      </div>
+    </section>
+
+    <nav id="commands" class="commands" aria-label="Commands">
+      <p id="hint" class="hint"><b>No typing needed:</b> click any button. Prefer the keyboard? Type a command — Tab completes, ↑/↓ walk history.</p>
+      <ul id="cmd-list"></ul>
+      <label class="toggle">
+        <input type="checkbox" id="instant"> skip typing animation
+      </label>
+    </nav>
+
+    <noscript>
+      <p class="noscript">This terminal needs JavaScript. Meanwhile: <a href="Neven_Geci_CV.pdf">download the CV (PDF)</a> ·
+        <a href="https://www.linkedin.com/in/neven-geci/">LinkedIn</a> · <a href="mailto:gecineven@gmail.com">gecineven@gmail.com</a></p>
+    </noscript>
+  </main>
+
+  <!-- decorative Slack-style alerts; hidden from screen readers, mutable -->
+  <div class="feed" id="feed" aria-hidden="true"></div>
+  <button type="button" class="mute" id="mute" aria-pressed="false" aria-label="Mute decorative alerts">
+    <span class="bell" aria-hidden="true">🔔</span> #platform-alerts · <span class="state">mute</span>
+  </button>
+
+  <script src="terminal.js"></script>
+  <script src="alerts.js"></script>
+</body>
+</html>

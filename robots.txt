@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+
+# ctf fragment 3/3: v3rify}
+# assemble all three, then: submit flag{...}

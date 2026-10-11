@@ -2,13 +2,17 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <!-- both themes are designed, so browsers shouldn't auto-darken the page -->
+  <meta name="color-scheme" content="light dark">
+  <script>try { var t = localStorage.getItem("theme"); if (t === "dark" || t === "light") document.documentElement.dataset.theme = t; } catch (e) {}</script>
   <title>Neven Geci · Cloud Security</title>
   <meta name="description" content="Neven Geci — cloud security / platform engineer. Zero trust, IAM, Kubernetes, AWS, GitOps. An interactive terminal portfolio.">
   <meta property="og:title" content="Neven Geci · Cloud Security / Platform Engineer">
   <meta property="og:description" content="An interactive terminal portfolio: kubectl get engineer neven-geci">
   <meta property="og:type" content="website">
-  <meta name="theme-color" content="#FFFFFF">
+  <meta name="theme-color" content="#FFFFFF" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#0E1113" media="(prefers-color-scheme: dark)">
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%230B6E6E'/%3E%3Ctext x='5' y='22' font-family='monospace' font-size='16' font-weight='700' fill='%23fff'%3E$%3C/text%3E%3Crect x='18' y='9' width='7' height='14' fill='%23fff'/%3E%3C/svg%3E">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -78,10 +82,12 @@
     <nav id="commands" class="commands" aria-label="Commands">
       <p id="hint" class="hint"><b>No typing needed:</b> click any button. Prefer the keyboard? Type a command — Tab completes, ↑/↓ walk history.</p>
       <ul id="cmd-list"></ul>
+    </nav>
+    <div class="toggle-row">
       <label class="toggle">
         <input type="checkbox" id="instant"> skip typing animation
       </label>
-    </nav>
+    </div>
 
     <noscript>
       <p class="noscript">This terminal needs JavaScript. Meanwhile: <a href="Neven_Geci_CV.pdf">download the CV (PDF)</a> ·

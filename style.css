@@ -1,18 +1,95 @@
+/* Light is the banner look. Dark follows the system unless the visitor picks a theme
+   (`kubectl config use-context dark|light`), which sets data-theme on <html>. */
 :root {
   --bg: #FFFFFF;
+  --card: #FFFFFF;
   --accent: #0B6E6E;
   --accent-soft: #E6F1F1;
+  --on-accent: #FFFFFF;
   --text: #1A1A1A;
   --muted: #555555;
   --rule: #E2E2E2;
   --border: #D4D4D4;
   --bar: #F3F3F3;
   --dot: #D9D9D9;
+  --dot-mute: #CFCFCF;
   --warn: #9A6700;
   --err: #B42318;
+  --down-bg: #FFF6F6;
+  --link-ul: rgba(11, 110, 110, .35);
+  --shadow: rgba(0, 0, 0, .06);
+  /* slack-style cards */
+  --slack-meta: #616061;
+  --slack-chip: #EBEBEB;
+  --code-fg: #C01343;
+  --code-bg: #F6F6F6;
+  --code-border: #E4E4E4;
+  --react-border: #A9D4E8;
+  --react-bg: #EAF5FA;
+  --link-blue: #1264A3;
   --mono: "JetBrains Mono", Consolas, ui-monospace, monospace;
-  color-scheme: light;
+  color-scheme: light dark;
 }
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0E1113;
+    --card: #13181B;
+    --accent: #45B8AA;
+    --accent-soft: #12302C;
+    --on-accent: #0E1113;
+    --text: #E4E6E7;
+    --muted: #98A2A8;
+    --rule: #252B2F;
+    --border: #353C41;
+    --bar: #191F22;
+    --dot: #1F2528;
+    --dot-mute: #4A5157;
+    --warn: #E0A440;
+    --err: #F07067;
+    --down-bg: #241315;
+    --link-ul: rgba(69, 184, 170, .4);
+    --shadow: rgba(0, 0, 0, .45);
+    --slack-meta: #9AA0A6;
+    --slack-chip: #2A3035;
+    --code-fg: #F28CA8;
+    --code-bg: #1E2428;
+    --code-border: #353C41;
+    --react-border: #2F5B73;
+    --react-bg: #13283A;
+    --link-blue: #7CC4F0;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0E1113;
+  --card: #13181B;
+  --accent: #45B8AA;
+  --accent-soft: #12302C;
+  --on-accent: #0E1113;
+  --text: #E4E6E7;
+  --muted: #98A2A8;
+  --rule: #252B2F;
+  --border: #353C41;
+  --bar: #191F22;
+  --dot: #1F2528;
+  --dot-mute: #4A5157;
+  --warn: #E0A440;
+  --err: #F07067;
+  --down-bg: #241315;
+  --link-ul: rgba(69, 184, 170, .4);
+  --shadow: rgba(0, 0, 0, .45);
+  --slack-meta: #9AA0A6;
+  --slack-chip: #2A3035;
+  --code-fg: #F28CA8;
+  --code-bg: #1E2428;
+  --code-border: #353C41;
+  --react-border: #2F5B73;
+  --react-bg: #13283A;
+  --link-blue: #7CC4F0;
+  color-scheme: dark;
+}
+:root[data-theme="light"] { color-scheme: light; }
 
 * { box-sizing: border-box; }
 
@@ -42,7 +119,7 @@ a:focus-visible, button:focus-visible, .toggle input:focus-visible {
 
 .skip {
   position: absolute; left: 16px; top: -48px;
-  background: var(--accent); color: #fff; padding: 6px 10px; border-radius: 6px; z-index: 10;
+  background: var(--accent); color: var(--on-accent); padding: 6px 10px; border-radius: 6px; z-index: 10;
 }
 .skip:focus { top: 8px; }
 
@@ -74,7 +151,7 @@ a:focus-visible, button:focus-visible, .toggle input:focus-visible {
   background: var(--bar);
   border-bottom: 1px solid var(--rule);
 }
-.bar i { width: 12px; height: 12px; border-radius: 50%; background: #CFCFCF; }
+.bar i { width: 12px; height: 12px; border-radius: 50%; background: var(--dot-mute); }
 .bar i:nth-child(3) { background: var(--accent); }
 
 /* faded background windows peeking out from behind the terminal, like the banner */
@@ -100,7 +177,7 @@ html, body { overflow-x: clip; }
 .ghost-body .hl { color: var(--accent); font-weight: 700; }
 .ghost-body .bar-fill { color: var(--accent); }
 .ghost .bar { height: 32px; }
-.ghost .bar i { width: 10px; height: 10px; background: #DDD; }
+.ghost .bar i { width: 10px; height: 10px; background: var(--dot-mute); }
 .ghost .bar span { margin-left: 8px; font-size: 12px; color: var(--muted); }
 .ghost-log { height: calc(6 * 1.9em + 24px); padding: 12px 16px; font: 12px/1.9 var(--mono); color: var(--muted); overflow: hidden; }
 .ghost-log .ll { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; transition: opacity .5s, transform .5s; }
@@ -112,7 +189,7 @@ html, body { overflow-x: clip; }
 /* chaos: the terminal "crashes" and restarts */
 .term.crash { animation: shake .5s; }
 .term.down { border-color: var(--err); }
-.term.down .screen { background: #FFF6F6; }
+.term.down .screen { background: var(--down-bg); }
 .term.down .bar i:nth-child(3) { background: var(--err); }
 .term.down .title { color: var(--err); font-weight: 700; }
 @keyframes shake {
@@ -147,9 +224,9 @@ html, body { overflow-x: clip; }
   position: relative;
   display: grid; grid-template-columns: 36px 1fr; gap: 10px;
   padding: 10px 12px 10px 16px;
-  background: var(--bg);
+  background: var(--card);
   border: 1px solid var(--rule); border-radius: 8px;
-  box-shadow: 0 6px 18px rgba(0, 0, 0, .08);
+  box-shadow: 0 6px 18px var(--shadow);
   font: 13px/1.45 Lato, -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
   color: var(--text);
   overflow: hidden;
@@ -169,18 +246,18 @@ html, body { overflow-x: clip; }
 .toast .body { min-width: 0; }
 .toast .who { display: flex; align-items: baseline; gap: 6px; }
 .toast .who b { font-weight: 900; }
-.toast .app { font-size: 10px; font-weight: 700; color: #616061; background: #EBEBEB; border-radius: 3px; padding: 0 4px; }
-.toast .when, .toast .chan { font-size: 12px; color: #616061; }
+.toast .app { font-size: 10px; font-weight: 700; color: var(--slack-meta); background: var(--slack-chip); border-radius: 3px; padding: 0 4px; }
+.toast .when, .toast .chan { font-size: 12px; color: var(--slack-meta); }
 .toast .msg { margin-top: 2px; overflow-wrap: anywhere; }
 .toast code {
-  font: 12px var(--mono); color: #C01343;
-  background: #F6F6F6; border: 1px solid #E4E4E4; border-radius: 3px; padding: 0 3px;
+  font: 12px var(--mono); color: var(--code-fg);
+  background: var(--code-bg); border: 1px solid var(--code-border); border-radius: 3px; padding: 0 3px;
 }
 .toast .react {
   display: inline-block; margin-top: 6px; padding: 0 7px;
-  font-size: 12px; border: 1px solid #A9D4E8; background: #EAF5FA; border-radius: 12px; color: #1264A3;
+  font-size: 12px; border: 1px solid var(--react-border); background: var(--react-bg); border-radius: 12px; color: var(--link-blue);
 }
-.toast .thread { margin-top: 4px; font-size: 12px; font-weight: 700; color: #1264A3; }
+.toast .thread { margin-top: 4px; font-size: 12px; font-weight: 700; color: var(--link-blue); }
 
 @media (prefers-reduced-motion: reduce) {
   .toast, .ghost-log .ll { transition: opacity .2s; }
@@ -192,8 +269,8 @@ html, body { overflow-x: clip; }
   position: relative;
   border: 2px solid var(--border);
   border-radius: 10px;
-  background: var(--bg);
-  box-shadow: 0 10px 30px rgba(0, 0, 0, .06);
+  background: var(--card);
+  box-shadow: 0 10px 30px var(--shadow);
   overflow: hidden;
 }
 .term .title {
@@ -236,7 +313,7 @@ html, body { overflow-x: clip; }
 /* clickable command inside output */
 .cmd-link {
   font: inherit; color: var(--accent); background: none; border: 0; padding: 0;
-  text-decoration: underline; text-decoration-color: rgba(11, 110, 110, .35);
+  text-decoration: underline; text-decoration-color: var(--link-ul);
   text-underline-offset: 3px; cursor: pointer; text-align: left;
 }
 .cmd-link:hover { text-decoration-color: var(--accent); }
@@ -256,7 +333,7 @@ html, body { overflow-x: clip; }
 
 .cursor {
   display: inline-block;
-  background: var(--accent); color: #fff;
+  background: var(--accent); color: var(--on-accent);
   min-width: 1ch;
   animation: blink 1.06s steps(1) infinite;
 }
@@ -269,7 +346,7 @@ html, body { overflow-x: clip; }
 #cmd-list { display: flex; flex-wrap: wrap; gap: 8px; margin: 0; padding: 0; list-style: none; }
 #cmd-list button {
   font: inherit; color: var(--accent);
-  background: var(--bg); border: 1.5px solid var(--border); border-radius: 6px;
+  background: var(--card); border: 1.5px solid var(--border); border-radius: 6px;
   padding: 6px 12px; cursor: pointer;
 }
 #cmd-list button { display: inline-flex; align-items: baseline; gap: 10px; }
@@ -277,6 +354,7 @@ html, body { overflow-x: clip; }
 .chip-cmd { color: var(--accent); font-size: 12px; }
 .hint b { color: var(--text); }
 #cmd-list button:hover { border-color: var(--accent); background: var(--accent-soft); }
+.toggle-row { position: relative; z-index: 1; font-size: 14px; }
 .toggle { display: inline-flex; align-items: center; gap: 8px; margin-top: 16px; color: var(--muted); cursor: pointer; }
 .toggle input { accent-color: var(--accent); width: 16px; height: 16px; margin: 0; }
 
@@ -288,13 +366,41 @@ html, body { overflow-x: clip; }
 
 /* ---------- small screens ---------- */
 @media (max-width: 720px) {
-  .topbar { padding: 8px 16px; }
+  /* keep scrolled-to prompts clear of the pinned command bar */
+  html { scroll-padding-bottom: 84px; }
+  .topbar { padding: 8px 12px; }
   .meta { display: none; }
   .chip-cmd { display: none; }
-  .stage { padding: 24px 16px 40px; }
-  .screen { padding: 16px; min-height: 360px; font-size: 14px; }
+  .stage { padding: 16px 12px 0; }
+  .term { border-radius: 8px; }
+  .bar { height: 34px; padding: 0 12px; }
+  .bar i { width: 10px; height: 10px; }
   .term .title { margin-right: 0; font-size: 12px; }
+  /* the terminal fills the screen above the pinned command bar, like an app */
+  .screen { padding: 14px 14px 18px; min-height: calc(100svh - 170px); font-size: 13px; }
+  body { padding-bottom: calc(64px + env(safe-area-inset-bottom)); }
   .tbl th, .tbl td { padding-right: 2ch; }
+  .tbl.eng .narrow-hide { display: none; }
+
+  /* command buttons: a bar pinned to the bottom of the screen, scrolling sideways like a keyboard accessory row */
+  .commands {
+    position: fixed; left: 0; right: 0; bottom: 0; z-index: 3;
+    margin: 0;
+    padding: 10px 0 calc(10px + env(safe-area-inset-bottom));
+    background: var(--bg);
+    border-top: 1px solid var(--rule);
+  }
+  .hint { display: none; }
+  #cmd-list {
+    flex-wrap: nowrap; overflow-x: auto; gap: 8px;
+    padding: 0 12px; scrollbar-width: none;
+    -webkit-mask-image: linear-gradient(to right, #000 85%, transparent);
+    mask-image: linear-gradient(to right, #000 85%, transparent);
+  }
+  #cmd-list::-webkit-scrollbar { display: none; }
+  #cmd-list li { flex: none; }
+  #cmd-list button { padding: 8px 14px; white-space: nowrap; }
+  .toggle-row { padding: 14px 0 24px; }
   /* tables marked .stack become one block per row */
   .tbl.stack, .tbl.stack tbody, .tbl.stack tr, .tbl.stack td { display: block; }
   .tbl.stack thead { display: none; }

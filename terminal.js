@@ -118,11 +118,13 @@
   }
 
   function table(headers, rows, opts = {}) {
-    const t = el("table", opts.stack ? "tbl stack" : "tbl");
+    const t = el("table", ["tbl", opts.stack && "stack", opts.cls].filter(Boolean).join(" "));
     if (opts.label) t.setAttribute("aria-label", opts.label);
+    // columns listed in narrowHide disappear on phones (CSS: .narrow-hide)
+    const hide = (cell, i) => { if (opts.narrowHide && opts.narrowHide.includes(i)) cell.classList.add("narrow-hide"); return cell; };
     if (headers) {
       const tr = el("tr");
-      headers.forEach((h) => tr.append(el("th", "", h)));
+      headers.forEach((h, i) => tr.append(hide(el("th", "", h), i)));
       el("thead").append(tr);
       t.append(tr.parentNode);
     }
@@ -133,6 +135,7 @@
         const td = el(!headers && i === 0 ? "th" : "td");
         if (!headers && i === 0) td.scope = "row";
         if (opts.nowrap && opts.nowrap.includes(i)) td.classList.add("nowrap");
+        hide(td, i);
         td.append(c);
         tr.append(td);
       });
@@ -191,6 +194,7 @@
     ["terraform apply", "…and make it so"],
     ["chaos", "kill this terminal, watch it self-heal"],
     ["ctf", "a flag is hidden on this site"],
+    ["kubectl config use-context", "dark / light theme", "theme"],
     ["clear", "clear the screen"],
     ["help", "this list"],
   ];
@@ -218,7 +222,8 @@
   }
 
   function engineerTable() {
-    table(["NAME", "ROLE", "STATUS"], [[strong("neven-geci"), accent(ROLE), "Running"]]);
+    table(["NAME", "ROLE", "STATUS"], [[strong("neven-geci"), accent(ROLE), "Running"]],
+      { cls: "eng", nowrap: [0, 1], narrowHide: [2] });
   }
 
   const handlers = {
@@ -499,6 +504,20 @@
     if (lc === "terraform init") { line(pass("Terraform has been successfully initialized!")); line(muted("next: "), cmdLink("terraform plan")); return; }
     if (/^terraform( |$)/.test(lc)) { line(muted("usage: "), cmdLink("terraform plan"), muted(" · "), cmdLink("terraform apply")); return; }
     if (/^(chaos|chaos-monkey|chaos monkey|kubectl delete pods?( .*)?)$/.test(lc)) return handlers.chaos();
+    m = lc.match(/^(?:kubectl config use-context|theme)(?: (dark|light|auto))?$/);
+    if (m) {
+      const root = document.documentElement;
+      if (!m[1]) {
+        line(muted("current context: "), accent(root.dataset.theme || "auto"));
+        line(muted("switch: "), cmdLink("kubectl config use-context dark", "dark"), muted(" · "),
+          cmdLink("kubectl config use-context light", "light"), muted(" · "), cmdLink("kubectl config use-context auto", "auto"));
+        return;
+      }
+      if (m[1] === "auto") delete root.dataset.theme; else root.dataset.theme = m[1];
+      try { m[1] === "auto" ? localStorage.removeItem("theme") : localStorage.setItem("theme", m[1]); } catch (_) {}
+      line(`Switched to context "${m[1]}".`);
+      return;
+    }
     if (lc === "ctf" || lc === "flag") return handlers.ctf();
     m = cmd.match(/^submit(?: (.+))?$/i);
     if (m) return handlers.submit(m[1]);
@@ -598,7 +617,7 @@
   function completions() {
     const base = HELP.map(([c]) => c).filter((c) => !c.includes("<"));
     const roleCmds = roles().map((r) => "kubectl describe role " + r.id);
-    return [...base, ...roleCmds, "submit flag{", "terraform destroy", "ls", "pwd", "history", "date", "exit"];
+    return [...base, ...roleCmds, "kubectl config use-context dark", "kubectl config use-context light", "submit flag{", "terraform destroy", "ls", "pwd", "history", "date", "exit"];
   }
 
   function complete() {
@@ -687,16 +706,20 @@
     await sleep(150);
     engineerTable();
     await sleep(550);
-    await echo("trivy config ./infra --severity CRITICAL,HIGH", true);
+    // On phones the same output, re-wrapped so nothing breaks mid-word.
+    const narrow = matchMedia("(max-width: 480px)").matches;
+    await echo(narrow ? "trivy config ./infra -s CRITICAL,HIGH" : "trivy config ./infra --severity CRITICAL,HIGH", true);
     await sleep(380);
-    line("zero-trust · iam · sso/scim · okta · aws · cloudflare");
-    await sleep(110);
-    line("k8s · argo-cd · helm · keda · terraform · cdk · kafka");
-    await sleep(380);
+    const tags = narrow
+      ? ["zero-trust · iam · sso/scim · okta", "aws · cloudflare · k8s · argo-cd", "helm · keda · terraform · cdk · kafka"]
+      : ["zero-trust · iam · sso/scim · okta · aws · cloudflare", "k8s · argo-cd · helm · keda · terraform · cdk · kafka"];
+    for (const t of tags) { line(t); await sleep(110); }
+    await sleep(270);
     line("Total: 0 ", muted("(CRITICAL: 0, HIGH: 0) "), pass("PASS"));
     await sleep(300);
     line("");
-    line(muted("click a button below, or type "), cmdLink("help"), muted(" to look around."));
+    if (narrow) line(muted("tap a button below, or type "), cmdLink("help"), muted("."));
+    else line(muted("click a button below, or type "), cmdLink("help"), muted(" to look around."));
     if (quick) skipAnim = false;
   }
 

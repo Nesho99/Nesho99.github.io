@@ -284,7 +284,12 @@
 
   function start() {
     scheduleFeed(18000); // after the intro and the falco welcome thread
-    setTimeout(() => post(FIRST), 8000);
+    // The welcome waits until the tab is actually seen (links often get opened in a background tab).
+    const welcome = () => {
+      if (document.hidden) { document.addEventListener("visibilitychange", welcome, { once: true }); return; }
+      setTimeout(() => post(FIRST), 2500);
+    };
+    setTimeout(welcome, 5500);
     scheduleLog();
 
     renderPods();

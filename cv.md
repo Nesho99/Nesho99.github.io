@@ -18,7 +18,7 @@ Cloud security and platform engineer with 4 years across data platforms, cloud i
 
 *Jul 2025 – Present · Remote*
 
-- Owned the platform for Cognism’s greenfield, product-wide public API end to end: deploying its services, Kubernetes networking, Cloudflare routing and rewrite rules, OpenAPI standardization and the implementation guide, and supporting teams through Kubernetes logging, monitoring, and scheduling issues.
+- Owned the platform for Cognism’s greenfield, product-wide public API and its MCP server end to end: deploying its services, Kubernetes networking, Cloudflare routing and rewrite rules, OpenAPI standardization and the implementation guide, and supporting teams through Kubernetes logging, monitoring, and scheduling issues.
 - Built the data layer of the internal developer platform on Port: configured the out-of-the-box GitHub data source, wrote a custom MongoDB Atlas integration, and extended the data model to fit both.
 - Integrated Confluent (Kafka) metrics into the Kubernetes monitoring stack and Coralogix and built the KEDA autoscaling proof of concept, laying the groundwork for Kafka monitoring and the more efficient scaling now rolling out.
 - Led an organization-wide secret-rotation effort after a vendor vulnerability, coordinating security with multiple backend and frontend teams; used phased rolling windows and lower-environment testing to roll out with zero downtime.
@@ -63,6 +63,7 @@ Cloud security and platform engineer with 4 years across data platforms, cloud i
 | --- | --- |
 | cloud/devops | AWS, Azure, Docker, Kubernetes, ECS, CI/CD, GitHub Actions, GitLab, Nginx, Cloudflare, CloudFront |
 | k8s/gitops | Argo CD, FluxCD, Helm, Kustomize, KEDA |
+| api/ai | OpenAPI, REST APIs, MCP (Model Context Protocol) |
 | observability | Grafana, Prometheus, Coralogix |
 | iac | CDK, Pulumi, Terraform, Ansible |
 | messaging | Kafka, RabbitMQ, Redis |
